@@ -1,7 +1,22 @@
 package tn.esprit.autolocapi.domain;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -9,42 +24,41 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Vehicule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idVehicule;
+    Long idVehicule;
 
-    private String immatriculation;
-
-    private String marque;
-
-    private String modele;
+    String immatriculation;
+    String marque;
+    String modele;
 
     @Enumerated(EnumType.STRING)
-    private CategorieVehicule categorie;
+    CategorieVehicule categorie;
 
-    private BigDecimal tarifJournalier;
+    BigDecimal tarifJournalier;
 
     @Enumerated(EnumType.STRING)
-    private StatutVehicule statut;
+    StatutVehicule statut;
 
-    // Plusieurs véhicules appartiennent à une agence
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_agence")
-    private Agence agence;
+    Agence agence;
 
-    // Un véhicule possède plusieurs maintenances
-    @OneToMany(mappedBy = "vehicule")
-    private List<Maintenance> maintenances;
+    @ManyToMany
+    @JoinTable(
+            name = "vehicule_equipement",
+            joinColumns = @JoinColumn(name = "id_vehicule"),
+            inverseJoinColumns = @JoinColumn(name = "id_equipement")
+    )
+    List<Equipement> equipements;
 
-    // Un véhicule possède plusieurs équipements
     @OneToMany(mappedBy = "vehicule")
-    private List<Equipement> equipements;
+    List<Maintenance> maintenances;
 
-    // Un véhicule peut avoir plusieurs réservations
     @OneToMany(mappedBy = "vehicule")
-    private List<Reservation> reservations;
+    List<Reservation> reservations;
 }

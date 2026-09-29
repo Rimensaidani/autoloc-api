@@ -1,23 +1,31 @@
 package tn.esprit.autolocapi.domain;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Equipement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idEquipement;
+    Long idEquipement;
 
-    private String libelle;
+    String libelle;
 
-    // Plusieurs équipements appartiennent à un véhicule
-    @ManyToOne
-    @JoinColumn(name = "id_vehicule")
-    private Vehicule vehicule;
+    @ManyToMany(mappedBy = "equipements")
+    List<Vehicule> vehicules;
 }
