@@ -1,6 +1,8 @@
 package tn.esprit.autolocapi.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -10,26 +12,32 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idClient;
+    Long idClient;
 
-    private String nom;
+    @NotBlank
+    String nom;
 
-    private String prenom;
+    @NotBlank
+    String prenom;
 
-    private String email;
+    @Email
+    String email;
 
-    private String telephone;
+    String telephone;
+    String numPermis;
+    LocalDate dateInscription;
 
-    private String numPermis;
-
-    private LocalDate dateInscription;
-
-    // Un client peut avoir plusieurs réservations
     @OneToMany(mappedBy = "client")
-    private List<Reservation> reservations;
+    List<Reservation> reservations;
+
+    @PrePersist
+    void initDateInscription() {
+        if (dateInscription == null) {
+            dateInscription = LocalDate.now();
+        }
+    }
 }

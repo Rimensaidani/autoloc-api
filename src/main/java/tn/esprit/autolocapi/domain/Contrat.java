@@ -1,6 +1,7 @@
 package tn.esprit.autolocapi.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -11,29 +12,23 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Contrat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idContrat;
+    Long idContrat;
 
-    private LocalDate dateSignature;
+    LocalDate dateSignature;
 
-    private BigDecimal montantTotal;
+    @Positive
+    BigDecimal montantTotal;
 
-    private boolean valide;
+    boolean valide;
 
-    // Un contrat correspond à une réservation
-    @OneToOne
-    @JoinColumn(name = "id_reservation")
-    private Reservation reservation;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_reservation", nullable = false, unique = true)
+    Reservation reservation;
 
-    // Un contrat peut avoir plusieurs paiements
-    @OneToMany(
-            mappedBy = "contrat",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<Paiement> paiements;
+    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Paiement> paiements;
 }

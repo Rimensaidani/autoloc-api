@@ -1,22 +1,14 @@
 package tn.esprit.autolocapi.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Equipement {
 
@@ -24,8 +16,9 @@ public class Equipement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idEquipement;
 
+    @NotBlank
     String libelle;
 
-    @ManyToMany(mappedBy = "equipements")
+    @ManyToMany(mappedBy = "equipements", fetch = FetchType.LAZY)
     List<Vehicule> vehicules;
 }

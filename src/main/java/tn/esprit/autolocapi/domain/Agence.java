@@ -1,10 +1,8 @@
 package tn.esprit.autolocapi.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,25 +10,22 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Agence {
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long idAgence;
 
-    private String nom;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long idAgence;
 
-    private String ville;
+    @NotBlank
+    String nom;
 
-    private String adresse;
+    String ville;
+    String adresse;
+    String telephone;
 
-    private String telephone;
+    @OneToMany(mappedBy = "agence", cascade = CascadeType.ALL)
+    List<Employe> employes;
 
-    @OneToMany(mappedBy = "agence")
-    private List<Employe> employes;
-    @OneToMany(mappedBy = "agence")
-    private List<Vehicule> vehicules;
-
-
-
+    @OneToMany(mappedBy = "agence", cascade = CascadeType.ALL)
+    List<Vehicule> vehicules;
 }

@@ -1,6 +1,7 @@
 package tn.esprit.autolocapi.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -9,31 +10,29 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idReservation;
+    Long idReservation;
 
-    private LocalDate dateDebut;
+    @NotNull
+    LocalDate dateDebut;
 
-    private LocalDate dateFin;
+    @NotNull
+    LocalDate dateFin;
 
     @Enumerated(EnumType.STRING)
-    private StatutReservation statut;
+    StatutReservation statut;
 
-    // Une réservation concerne un seul véhicule
-    @ManyToOne
-    @JoinColumn(name = "id_vehicule")
-    private Vehicule vehicule;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_client", nullable = false)
+    Client client;
 
-    // Une réservation appartient à un seul client
-    @ManyToOne
-    @JoinColumn(name = "id_client")
-    private Client client;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_vehicule", nullable = false)
+    Vehicule vehicule;
 
-    // Une réservation possède un contrat
-    @OneToOne(mappedBy = "reservation")
-    private Contrat contrat;
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
+    Contrat contrat;
 }
