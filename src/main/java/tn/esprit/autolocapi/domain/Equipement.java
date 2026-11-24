@@ -1,5 +1,6 @@
 package tn.esprit.autolocapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -18,7 +19,7 @@ public class Equipement {
 
     @NotBlank
     String libelle;
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "equipements", fetch = FetchType.LAZY)
     List<Vehicule> vehicules;
 }

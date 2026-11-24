@@ -26,11 +26,11 @@ public class Reservation {
     StatutReservation statut;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_client", nullable = false)
+    @JoinColumn(name = "id_client")
     Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_vehicule", nullable = false)
+    @JoinColumn(name = "id_vehicule")
     Vehicule vehicule;
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)

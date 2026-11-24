@@ -1,5 +1,7 @@
 package tn.esprit.autolocapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -34,8 +36,10 @@ public class Vehicule {
     StatutVehicule statut;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_agence", nullable = false)
+    @JoinColumn(name = "id_agence")
+    @JsonBackReference
     Agence agence;
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

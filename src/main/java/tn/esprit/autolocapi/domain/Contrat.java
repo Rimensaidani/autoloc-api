@@ -26,7 +26,7 @@ public class Contrat {
     boolean valide;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_reservation", nullable = false, unique = true)
+    @JoinColumn(name = "id_reservation", unique = true)
     Reservation reservation;
 
     @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true)

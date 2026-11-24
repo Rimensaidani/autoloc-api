@@ -1,6 +1,7 @@
 package tn.esprit.autolocapi.controller;
 
 import lombok.AllArgsConstructor;
+import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.autolocapi.domain.Employe;
 import tn.esprit.autolocapi.service.IEmployeService;
@@ -37,4 +38,17 @@ public class EmployeController {
     public void supprimerEmployeById(@PathVariable Long id) {
         employeService.supprimerEmployeById(id);
     }
+
+    @PutMapping("/desaffecterEmploye/{idEmploye}")
+    public Employe desaffecterEmploye(@PathVariable Long idEmploye) {
+        return employeService.desaffecterEmploye(idEmploye);
+
+    }
+    @PutMapping("/affecterEmploye/{idEmploye},{idAgence}")
+    public Employe affectAgence(@PathVariable Long idEmploye ,@PathVariable Long idAgence){
+        return employeService.affectEmploye(idEmploye, idAgence);
+    }
+
 }
+
+
